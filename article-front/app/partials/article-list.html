@@ -1,0 +1,37 @@
+<div class="container-fluid">
+  <div class="searchbar" id="searchbar">
+  <div class="row">
+    <div class="col">
+      <!--Searchbar content-->
+      <input ng-model="searchquery" ng-change="triggerSuggest();">
+      <button ng-click="triggerQuery();">Search</button>
+    </div>
+  </div>
+
+   <div class="row">
+    <div class="col">
+      <!--Search Suggest content-->
+      <ul class="suggests">
+        <li ng-repeat="suggest in suggests">
+          <p ng-click="setSearchQuery(suggest);">{{suggest.text}}</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+  </div>
+
+  <div class="row">
+    <div class="col" ng-model="currentpage">
+      <!--Article List content-->
+      <ul class="articles">
+        <div infinite-scroll='scrollExpand()' infinite-scroll-distance='0'>
+        <li ng-repeat="article in articles">
+          <a href="#/articles/{{article._id}}">{{article.fields.title[0]}}</a>&nbsp;&nbsp;<strong>{{article.fields.number[0]}}</strong>
+          <p>{{article.fields.abstract[0]}}</p>
+        </li>
+        </div>
+      </ul>
+      <div ng-show='loading'>Loading data...</div>
+    </div>
+  </div>
+</div>

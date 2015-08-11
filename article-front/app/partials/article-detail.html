@@ -1,0 +1,9 @@
+
+<h1>{{article.result._source.title}}</h1>
+
+<p><strong>keywords : {{article.result._source.keywords}} 
+length : {{article.result._source.number}}</strong><p>
+
+<div data-ng-bind-html="article.result._source.content"></div>
+
+
