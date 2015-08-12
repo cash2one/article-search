@@ -1,0 +1,13 @@
+# coding: utf-8
+from django.conf.urls import url
+from rest_framework.urlpatterns import format_suffix_patterns
+
+from composition import views
+
+urlpatterns = [
+    url(r'^$', views.CompositionList.as_view()),
+    url(r'^(?P<pk>[0-9]+)/$', views.CompositionDetail.as_view()),
+    url(r'^image/(?P<pk>[0-9]+)/$', views.CompositionImage.as_view()),
+]
+
+urlpatterns = format_suffix_patterns(urlpatterns)
