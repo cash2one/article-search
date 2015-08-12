@@ -1,0 +1,114 @@
+<div class="row" ng-controller="compositionsEditCtrl">
+    <div class="col-md-offset-1 col-md-10">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <strong>作文编辑</strong>
+            </div>
+            <div class="panel-body">
+                <!--composition content-->
+                <form class="form-horizontal" name="comForm" role="form" novalidate ng-submit="AddOrUpdateComposition()">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="status">{{compostionMeta.status.label}}</label>
+						<div class="col-sm-3">
+                        	<input class="form-control" type="text" ng-model="compositionEdit.status" ng-readonly="compostionMeta.status.read_only" ng-required="compostionMeta.status.required"></select>
+						</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="created">{{compostionMeta.created.label}}</label>
+                        <div class="col-sm-4">
+							<input class="form-control" type="text" ng-model="compositionEdit.created" ng-readonly="compostionMeta.created.read_only" ng-required="compostionMeta.created.required" />
+						</div>
+                        <label class="col-sm-2 control-label" for="creator">{{compostionMeta.creator.label}}</label>
+                        <div class="col-sm-4">
+							<input class="form-control" ng-model="compositionEdit.creator" ng-readonly="compostionMeta.creator.read_only" ng-required="compostionMeta.creator.required" />
+						</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="modified">{{compostionMeta.modified.label}}</label>
+                        <div class="col-sm-4">
+							<input class="form-control" type="text" ng-model="compositionEdit.modified" ng-readonly="compostionMeta.modified.read_only" ng-required="compostionMeta.modified.required" />
+						</div>
+                        <label class="col-sm-2 control-label" for="approver">{{compostionMeta.approver.label}}</label>
+                        <div class="col-sm-4">
+							<input class="form-control" ng-model="compositionEdit.approver" ng-readonly="compostionMeta.approver.read_only" ng-required="compostionMeta.approver.required" />
+						</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="title">{{compostionMeta.title.label}}</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="title" id="title" placeholder="{{compostionMeta.title.help_text}}" ng-model="compositionEdit.title" ng-readonly="compostionMeta.title.read_only" ng-required="compostionMeta.title.required" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="grade">{{compostionMeta.grade.label}}</label>
+                        <div class="col-sm-3">
+                            <select type="text" class="form-control" name="grade" id="grade" placeholder="{{compostionMeta.grade.help_text}}" ng-model="compositionEdit.grade" ng-readonly="compostionMeta.grade.read_only" ng-required="compostionMeta.grade.required" ng-options="item.value as item.display_name for item in compostionMeta.grade.choices" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="tags">{{compostionMeta.json_tags.label}}</label>
+                        <div class="col-sm-8">
+                            <tags-input name="tags" id="tags" ng-model="compositionEdit.json_tags" ng-readonly="compostionMeta.json_tags.read_only" ng-required="compostionMeta.json_tags.required"></tags-input>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="atype">{{compostionMeta.atype.label}}</label>
+                        <div class="col-sm-3">
+                            <select type="text" class="form-control" name="atype" id="atype" placeholder="{{compostionMeta.atype.help_text}}" ng-model="compositionEdit.atype" ng-readonly="compostionMeta.atype.read_only" ng-required="compostionMeta.atype.required" ng-options="item.value as item.display_name for item in compostionMeta.atype.choices" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="number">{{compostionMeta.number.label}}</label>
+                        <div class="col-sm-3">
+                            <input type="number" class="form-control" id="number" name="number" placeholder="{{compostionMeta.number.help_text}}" ng-model="compositionEdit.number" ng-readonly="compostionMeta.number.read_only" ng-required="compostionMeta.number.required" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="source">{{compostionMeta.source.label}}</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="source" id="source" placeholder="{{compostionMeta.source.help_text}}" ng-model="compositionEdit.source" ng-readonly="compostionMeta.source.read_only" ng-required="compostionMeta.source.required" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="abstract">{{compostionMeta.abstract.label}}</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="abstract" id="abstract" placeholder="{{compostionMeta.abstract.help_text}}" ng-model="compositionEdit.abstract" ng-readonly="compostionMeta.abstract.read_only" ng-required="compostionMeta.abstract.required" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="content">{{compostionMeta.content.label}}</label>
+                        <div class="col-sm-8" id="content" name="content" text-angular ta-toolbar="taToolbarConfig" ng-model="compositionEdit.content" ng-readonly="compostionMeta.content.read_only" ng-required="compostionMeta.content.required"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="beginning">{{compostionMeta.beginning.label}}</label>
+                        <div class="col-sm-8" text-angular ta-toolbar="taToolbarConfig" ng-model="compositionEdit.beginning" ng-readonly="compostionMeta.beginning.read_only" ng-required="compostionMeta.beginning.required"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="ending">{{compostionMeta.ending.label}}</label>
+                        <div class="col-sm-8" text-angular ta-toolbar="taToolbarConfig" ng-model="compositionEdit.ending" ng-readonly="compostionMeta.ending.read_only" ng-required="compostionMeta.ending.required"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="image">{{compostionMeta.image.label}}</label>
+                        <div class="col-sm-8">
+                            <button type="button" ngf-select ng-model="uploadImage">选择并上传</button>
+                            <img ng-show="uploadImage" ngf-src="uploadImage" ngf-accept="'image/*'" height="100" width="100"></img>
+                            <img ng-hide="uploadImage" ng-src="{{compositionEdit.image}}" height="100" width="100" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-1">
+                            <button type="submit" class="btn btn-default" ng-disabled="comForm.$invalid">保存</button>
+                        </div>
+                        <div class="col-sm-1">
+                            <button type="button" class="btn btn-default" ng-click="cancelEdit()">取消</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+

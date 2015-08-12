@@ -1,0 +1,16 @@
+<div class="row" ng-controller="userCtrl">
+    <div class="col-md-offset-2 col-md-8">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <strong>账户详情</strong>
+            </div>
+            <div class="panel-body" ng-model="myDetails">
+                <p>用户名: {{myDetails.username}}</p>
+                <p>Email: {{myDetails.email}}</p>
+                <p>录入数: {{myDetails.created_count}}</p>
+                <p>审核数: {{myDetails.approved_count}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+

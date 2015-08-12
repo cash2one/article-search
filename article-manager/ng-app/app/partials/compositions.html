@@ -1,0 +1,23 @@
+<div class="row" ng-controller="compositionsListCtrl">
+    <div class="col-md-offset-1 col-md-10">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <strong>作文列表</strong>
+            </div>
+            <div class="panel-body" ng-model="currentpage">
+                <!--composition list content-->
+                <ul class="compositions">
+                    <div infinite-scroll='scrollExpand()' infinite-scroll-distance='0'>
+                        <li ng-repeat="composition in compositions">
+                            <div class="col-sm-3">题目:{{composition.title | limitTo:20}}</div>
+                            <div class="col-sm-2">字数:{{composition.number}}</div>
+                            <div class="col-sm-3">摘要:{{composition.abstract | limitTo:20}}</div>
+                            <div class="col-sm-1"><a ng-show="gToken && gCurrentUser && (gUserMeta && gUserMeta.perms.indexOf('change_composition')>=0)" href="#/edit-composition/{{composition.id}}/">审核</a></div>
+                        </li>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+

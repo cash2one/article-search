@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>作文录入系统</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="/static/app/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/app/bower_components/angular-loading-bar/build/loading-bar.min.css">
+    <link rel='stylesheet' href='/static/app/bower_components/font-awesome/css/font-awesome.min.css'>
+    <link rel='stylesheet' href='/static/app/bower_components/textAngular/dist/textAngular.css'>
+    <link rel="stylesheet" href="/static/app/bower_components/ng-tags-input/ng-tags-input.min.css">
+
+    <style>
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+            background-color: #eee;
+        }
+        
+        input.ng-invalid {
+            border: 1px solid red;
+        }
+        
+        input.ng-valid {
+            border: 1px solid green;
+        }
+
+    </style>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body ng-app="compositionApp">
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation" ng-controller="HomeCtrl">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">作文录入系统</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a ng-href="#/">Home</a></li>
+                    <li ng-show="gToken && gCurrentUser && (gUserMeta && gUserMeta.perms.indexOf('add_composition')>=0)"><a ng-href="#/add-composition">录入</a></li>
+                    <li ng-show="gToken && gCurrentUser && (gUserMeta && gUserMeta.perms.indexOf('view_composition')>=0)"><a ng-href="#/compositions">审核</a></li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li ng-show="gToken && gCurrentUser"><a href="#/me">{{gCurrentUser.username}}</a></li>
+                    <li ng-hide="gToken"><a ng-href="#/signin">Signin</a></li>
+                    <li ng-show="gToken && gCurrentUser"><a ng-click="logout()">Logout</a></li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </div>
+
+    <div class="view-container" ng-view="">
+
+    </div>
+    <!-- /container -->
+
+    <script src="/static/app/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/static/app/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/static/app/bower_components/angular/angular.min.js"></script>
+    <script src="/static/app/bower_components/angular-route/angular-route.min.js"></script>
+    <script src="/static/app/bower_components/angular-animate/angular-animate.min.js"></script>
+    <script src="/static/app/bower_components/angular-resource/angular-resource.min.js"></script>
+    <script src="/static/app/bower_components/ngstorage/ngStorage.min.js"></script>
+    <script src="/static/app/bower_components/ngInfiniteScroll/build/ng-infinite-scroll.min.js"></script>
+    <script src="/static/app/bower_components/angular-loading-bar/build/loading-bar.min.js"></script>
+    <script src="/static/app/bower_components/jwt-decode/build/jwt-decode.min.js"></script>
+    <script src="/static/app/bower_components/textAngular/dist/textAngular-rangy.min.js"></script>
+    <script src="/static/app/bower_components/textAngular/dist/textAngular-sanitize.min.js"></script>
+    <script src="/static/app/bower_components/textAngular/dist/textAngular.min.js"></script>
+    <script src="/static/app/bower_components/ng-file-upload/ng-file-upload.min.js"></script>
+    <script src="/static/app/bower_components/ng-file-upload/ng-file-upload-shim.min.js"></script>
+    <script src="/static/app/bower_components/ng-tags-input/ng-tags-input.min.js"></script>
+    <!--script src="/static/app/js/app.js"></script>
+    <script src="/static/app/js/controllers.js"></script>
+    <script src="/static/app/js/services.js"></script -->
+    <script src="/static/app/js/dist/article-manager.js"></script>
+</body>
+
+</html>
+
