@@ -1,0 +1,3 @@
+{
+  "predef": ["angular", "alert", "console", "jwt_decode"]
+}

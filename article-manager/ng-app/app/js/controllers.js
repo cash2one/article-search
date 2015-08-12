@@ -4,9 +4,8 @@
 
 /* Controllers */
 
-var compositionAppControllers = angular.module('compositionAppControllers', ['ngStorage']);
-
-compositionAppControllers.controller('HomeCtrl', ['$rootScope', '$scope', '$location', '$localStorage', 'authService', 'compositionService',
+angular.module('compositionAppControllers', ['ngStorage'])
+.controller('HomeCtrl', ['$rootScope', '$scope', '$location', '$localStorage', 'authService', 'compositionService',
     function($rootScope, $scope, $location, $localStorage, authService, compositionService) {
         // helper functions
         function changeUser(user) {
@@ -84,9 +83,9 @@ compositionAppControllers.controller('HomeCtrl', ['$rootScope', '$scope', '$loca
         $rootScope.gUserMeta = $localStorage.userMeta;
         $scope.signinError = null;
     }
-]);
+])
 
-compositionAppControllers.controller('compositionsListCtrl', ['$scope', 'compositionService',
+.controller('compositionsListCtrl', ['$scope', 'compositionService',
     function($scope, compositionService) {
         $scope.scrollExpand = function() {
             if (!$scope.compositions || $scope.loading) return;
@@ -109,9 +108,9 @@ compositionAppControllers.controller('compositionsListCtrl', ['$scope', 'composi
         $scope.currentpage = 1;
         $scope.compositions = [];
     }
-]);
+])
 
-compositionAppControllers.controller('userCtrl', ['$rootScope', '$scope', '$location', 'authService',
+.controller('userCtrl', ['$rootScope', '$scope', '$location', 'authService',
     function($rootScope, $scope, $location, authService) {
         // controller init
         if ($rootScope.gCurrentUser) {
@@ -128,9 +127,9 @@ compositionAppControllers.controller('userCtrl', ['$rootScope', '$scope', '$loca
             $scope.logout();
         }
     }
-]);
+])
 
-compositionAppControllers.controller('compositionsEditCtrl', ['$rootScope', '$scope', '$location', '$routeParams', 'Upload', 'compositionService',
+.controller('compositionsEditCtrl', ['$rootScope', '$scope', '$location', '$routeParams', 'Upload', 'compositionService',
     function($rootScope, $scope, $location, $routeParams, Upload, compositionService) {
         $scope.insertCompositionSuccess = function(msg) {
             alert(msg);
@@ -263,9 +262,9 @@ compositionAppControllers.controller('compositionsEditCtrl', ['$rootScope', '$sc
             $scope.compositionEdit = null;
         }
     }
-]);
+])
 
-compositionAppControllers.controller('compositionsDetailCtrl', ['$scope', '$location', '$routeParams', 'compositionService',
+.controller('compositionsDetailCtrl', ['$scope', '$location', '$routeParams', 'compositionService',
     function($scope, $location, $routeParams, compositionService) {
         // controller init
         compositionService.get_detail({

@@ -4,9 +4,8 @@
 
 /* Services */
 
-var compositionAppServices = angular.module('compositionAppServices', ['ngResource']);
-
-compositionAppServices.factory('authService', ['$http',
+angular.module('compositionAppServices', ['ngResource'])
+.factory('authService', ['$http',
     function($http) {
         var baseUrl = "/api-token-auth";
         return {
@@ -25,9 +24,8 @@ compositionAppServices.factory('authService', ['$http',
             }
         };
     }
-]);
-
-compositionAppServices.factory('compositionService', ['$resource',
+])
+.factory('compositionService', ['$resource',
     function($resource) {
         return $resource('/composition/', {
             'format': 'json'

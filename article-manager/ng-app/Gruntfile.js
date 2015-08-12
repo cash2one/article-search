@@ -12,13 +12,24 @@ module.exports = function(grunt) {
         dest: 'app/js/dist/<%= pkg.name %>.js'
       }
     },
+    ngAnnotate: {
+      options: {
+        singleQuotes: true,
+      },
+      dist: {
+        src: ['<%= concat.dist.dest %>'],
+        dest: 'app/js/dist/<%= pkg.name %>.annotate.js'
+      }
+    },
     uglify: {
       options: {
-        banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
+        banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n',
+        mangle: false,
+        compress: true
       },
       dist: {
         files: {
-          'app/js/dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
+          'app/js/dist/<%= pkg.name %>.min.js': ['<%= ngAnnotate.dist.dest %>']
         }
       }
     },
@@ -57,6 +68,6 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('test', ['htmlhint', 'jshint']);
-  grunt.registerTask('default', ['concat', 'uglify']);
+  grunt.registerTask('default', ['concat','ngAnnotate','uglify']);
 
 };

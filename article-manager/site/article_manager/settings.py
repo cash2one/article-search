@@ -29,6 +29,7 @@ SECRET_KEY = 'soy7cvr+*ad_+6m(c2&pbeow4-tcxklmgyslak4b1=toih0()i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+DEBUG_PROPAGATE_EXCEPTIONS = True
 
 ALLOWED_HOSTS = []
 
@@ -118,7 +119,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, '../tmp_dist/'),
+    os.path.join(BASE_DIR, 'ng-dist/'),
 )
 MEDIA_URL = '/media/images/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/images/')

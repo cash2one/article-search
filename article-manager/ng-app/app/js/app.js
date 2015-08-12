@@ -4,7 +4,7 @@
 
 /* App Module */
 
-var compositionApp = angular.module('compositionApp', [
+angular.module('compositionApp', [
     'ngStorage',
     'ngRoute',
     'ngAnimate',
@@ -16,10 +16,8 @@ var compositionApp = angular.module('compositionApp', [
 
     'compositionAppControllers',
     'compositionAppServices'
-]);
-
-compositionApp
-    .config(['$routeProvider', '$httpProvider', '$resourceProvider',
+])
+.config(['$routeProvider', '$httpProvider', '$resourceProvider',
         function($routeProvider, $httpProvider, $resourceProvider) {
             $routeProvider.
             when('/', {
