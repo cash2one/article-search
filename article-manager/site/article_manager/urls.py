@@ -31,4 +31,5 @@ urlpatterns = [
     url(r'^api-token-auth/signin/', 'rest_framework_jwt.views.obtain_jwt_token'),
 ]
 if settings.DEBUG:
-    urlpatterns += media_urlpatterns
+    urlpatterns += media_urlpatterns 
+

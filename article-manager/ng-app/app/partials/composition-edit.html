@@ -10,7 +10,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label" for="status">{{compostionMeta.status.label}}</label>
 						<div class="col-sm-3">
-                        	<input class="form-control" type="text" ng-model="compositionEdit.status" ng-readonly="compostionMeta.status.read_only" ng-required="compostionMeta.status.required"></select>
+                        	<input class="form-control" type="text" ng-model="compositionEdit.status" ng-readonly="compostionMeta.status.read_only" ng-required="compostionMeta.status.required" />
 						</div>
                     </div>
                     <div class="form-group">
@@ -92,7 +92,7 @@
                         <label class="col-sm-2 control-label" for="image">{{compostionMeta.image.label}}</label>
                         <div class="col-sm-8">
                             <button type="button" ngf-select ng-model="uploadImage">选择并上传</button>
-                            <img ng-show="uploadImage" ngf-src="uploadImage" ngf-accept="'image/*'" height="100" width="100"></img>
+                            <img ng-show="uploadImage" ngf-src="uploadImage" ngf-accept="'image/*'" height="100" width="100" />
                             <img ng-hide="uploadImage" ng-src="{{compositionEdit.image}}" height="100" width="100" />
                         </div>
                     </div>

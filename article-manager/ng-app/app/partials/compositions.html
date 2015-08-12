@@ -7,7 +7,7 @@
             <div class="panel-body" ng-model="currentpage">
                 <!--composition list content-->
                 <ul class="compositions">
-                    <div infinite-scroll='scrollExpand()' infinite-scroll-distance='0'>
+                    <div infinite-scroll="scrollExpand()" infinite-scroll-distance="0">
                         <li ng-repeat="composition in compositions">
                             <div class="col-sm-3">题目:{{composition.title | limitTo:20}}</div>
                             <div class="col-sm-2">字数:{{composition.number}}</div>

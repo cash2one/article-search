@@ -1,3 +1,5 @@
+(function(){
+
 'use strict';
 
 /* Controllers */
@@ -100,7 +102,7 @@ compositionAppControllers.controller('compositionsListCtrl', ['$scope', 'composi
                     $scope.loading = false;
                 });
             $scope.currentpage += 1;
-        }
+        };
 
         // controller init
         $scope.loading = false;
@@ -133,7 +135,7 @@ compositionAppControllers.controller('compositionsEditCtrl', ['$rootScope', '$sc
         $scope.insertCompositionSuccess = function(msg) {
             alert(msg);
             $location.path("/");
-        }
+        };
 
         $scope.UpdateCompositionImage = function(id, msg) {
             if ($scope.uploadImage) {
@@ -158,7 +160,7 @@ compositionAppControllers.controller('compositionsEditCtrl', ['$rootScope', '$sc
                         console.log('error status: ' + status);
                     });
             }
-        }
+        };
 
         $scope.AddOrUpdateComposition = function() {
                 if ($scope.compositionEdit && $scope.compositionEdit.id) {
@@ -192,11 +194,11 @@ compositionAppControllers.controller('compositionsEditCtrl', ['$rootScope', '$sc
                         }
                     );
                 }
-            } // end of AddOrUpdateComposition
+            }; // end of AddOrUpdateComposition
 
         $scope.cancelEdit = function() {
             $location.path("/");
-        }
+        };
 
         // load meta info
         function loadCompositionMeta(type, id) {
@@ -275,3 +277,4 @@ compositionAppControllers.controller('compositionsDetailCtrl', ['$scope', '$loca
     }
 ]);
 
+})();

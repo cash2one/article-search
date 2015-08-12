@@ -118,7 +118,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATICFILES_DIRS = (
-    '/home/lbjworld/ng_project/ng_composition_manager',
+    os.path.join(BASE_DIR, '../tmp_dist/'),
 )
 MEDIA_URL = '/media/images/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/images/')
@@ -130,7 +130,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+        #'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
     'PAGE_SIZE': 10,
@@ -143,7 +143,7 @@ JWT_AUTH = {
     'JWT_VERIFY': True,
     'JWT_VERIFY_EXPIRATION': True,
     'JWT_LEEWAY': 0,
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=300),
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=600),
     'JWT_AUDIENCE': None,
     'JWT_ISSUER': None,
 

@@ -1,3 +1,5 @@
+(function(){
+
 'use strict';
 
 /* App Module */
@@ -87,7 +89,7 @@ compositionApp
     ])
     .run(function($rootScope, $location) {
         $rootScope.$on("$routeChangeStart", function(event, next, current) {
-            if ($rootScope.gCurrentUser == null) {
+            if ($rootScope.gCurrentUser === null) {
                 // no logged user, redirect to /login
                 if (next.templateUrl === "partials/signin.html") {
                     // pass
@@ -98,3 +100,4 @@ compositionApp
         });
     });
 
+})();

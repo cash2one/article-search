@@ -18,7 +18,10 @@
     "grunt-contrib-watch": "~0.6.1",
     "grunt-contrib-jshint": "~0.10.0",
     "grunt-contrib-nodeunit": "~0.4.1",
-    "grunt-contrib-uglify": "~0.5.0"
+    "grunt-contrib-uglify": "~0.5.0",
+    "grunt-contrib-qunit": "latest",
+    "grunt-htmlhint": "latest",
+    "matchdep": "latest"
   },
   "scripts": {
     "postinstall": "bower install",

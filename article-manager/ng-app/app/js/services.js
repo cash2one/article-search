@@ -1,3 +1,5 @@
+(function(){
+
 'use strict';
 
 /* Services */
@@ -11,12 +13,12 @@ compositionAppServices.factory('authService', ['$http',
             signin: function(data, success, error) {
                 $http.post(baseUrl + '/signin/', data)
                     .success(success)
-                    .error(error)
+                    .error(error);
             },
             me: function(userid, success, error) {
                 $http.get(baseUrl + '/me/' + userid + '/')
                     .success(success)
-                    .error(error)
+                    .error(error);
             },
             logout: function(success) {
                 success();
@@ -57,3 +59,4 @@ compositionAppServices.factory('compositionService', ['$resource',
     }
 ]);
 
+})();
