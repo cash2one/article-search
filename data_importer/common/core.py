@@ -5,6 +5,9 @@ import logging
 import threading
 import Queue
 
+import common.decorator as decorator
+
+
 logger = logging.getLogger(__name__)
 
 class StorageThread(threading.Thread):
@@ -18,8 +21,8 @@ class StorageThread(threading.Thread):
         generator.update(str(value))
         return generator.hexdigest()
 
+    @decorator.trace_log(logger=logger,lvl=logging.INFO)
     def run(self):
-        logger.info('storage thread[{thread_id}] start'.format(thread_id=self.name))
         while not (self.stop_event.isSet() and self.queue.empty()):
             try:
                 record = self.queue.get(block=False, timeout=1)
@@ -29,7 +32,6 @@ class StorageThread(threading.Thread):
             else:
                 self.storage.store(self.key(record), record)
                 self.queue.task_done()
-        logger.info('storage thread[{thread_id}] stop'.format(thread_id=self.name))
 
 # main loop of import process
 class DataImport(threading.Thread):
@@ -39,8 +41,8 @@ class DataImport(threading.Thread):
         self.storage = storage
         self.storage_pool_size = storage_pool_size
     
+    @decorator.trace_log(logger=logger,lvl=logging.INFO)
     def run(self):
-        logger.info('data import start')
         queue = Queue.Queue()
         # init storage
         stop_event = threading.Event()

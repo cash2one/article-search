@@ -173,7 +173,7 @@ if __name__ == '__main__':
     logger.info('import zuowenbao data from files')
     importer = ZuowenbaoImporter(root_path=ROOT_DIR)
     #output_storage = DummyStorage()
-    output_storage = ESStorage(['localhost:32769'],
+    output_storage = ESStorage(['localhost:32000'],
                                         index='article', doc_type='composition', 
                                         doc_index=DOC_INDEX)
     worker = core.DataImport(importer=importer, storage=output_storage)

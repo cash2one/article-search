@@ -6,6 +6,7 @@ import random
 from contextlib import contextmanager
 from elasticsearch import Elasticsearch
 
+import common.decorator as decorator
 from storage import Storage
 
 logger = logging.getLogger(__name__)
@@ -42,6 +43,7 @@ class ESStorage(Storage):
         except:
             raise
 
+    @decorator.trace_log(logger=logger,lvl=logging.INFO)
     def init(self):
         request_body = self.doc_index
         with self._pick() as cli:
@@ -63,13 +65,12 @@ class ESStorage(Storage):
             return cli.index(index=self.es_index, 
                 doc_type=self.doc_type, body=value, id=key)
 
+    @decorator.trace_log(logger=logger,lvl=logging.INFO)
     def close(self):
-        logger.debug('storage closing')
         count = 0
         while count < self.pool_size:
             cli = self.client_pool.get()
             self.client_pool.task_done()
             count += 1
         self.client_pool.join()
-        logger.debug('storage closed')
 

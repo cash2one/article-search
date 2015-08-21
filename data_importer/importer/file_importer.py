@@ -11,6 +11,7 @@ from functools import partial
 import Queue
 import threading
 
+import common.decorator as decorator
 from importer import DataImporter, MethodNotImplemented
 
 logger = logging.getLogger(__name__)
@@ -56,6 +57,7 @@ class FileDataImporter(DataImporter, threading.Thread):
                 self.__data_queue.task_done()
                 yield obj
 
+    @decorator.trace_log(logger=logger,lvl=logging.INFO)
     def run(self, processes=4, chunksize=100):
         # generate list of (path, fname)
         def traverse_filter_ext(dir_path, ext):
@@ -68,7 +70,6 @@ class FileDataImporter(DataImporter, threading.Thread):
                     traverse_filter_ext(dpath, ext)
 
         # run func start
-        logger.info('importer main thread start')
         try:
             # create pool and run
             pool = Pool(processes=processes)
@@ -84,5 +85,4 @@ class FileDataImporter(DataImporter, threading.Thread):
             pool.join()
         except:
             raise
-        logger.info('importer main thread ended')
 
