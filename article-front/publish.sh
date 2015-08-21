@@ -3,7 +3,7 @@
 WORK_DIR=`pwd`
 SRC_DIR="${WORK_DIR}/ng-app/app"
 DEST_DIR="${WORK_DIR}/site/app"
-EXT_PATTERN=".*\(\.min\.js\|\.css\|\.html\)"
+EXT_PATTERN=".*\(\.min\.js\|\.css\|\.html\|\.map\)"
 
 rm -rf ${DEST_DIR} && mkdir -p ${DEST_DIR} && cd ${SRC_DIR}
 grunt

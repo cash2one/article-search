@@ -1,0 +1,4 @@
+jieba==0.37
+beautifulsoup4==4.4.0
+pycurl==7.19.3
+elasticsearch==1.6.0
