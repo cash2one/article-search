@@ -7,7 +7,7 @@ import sys
 
 import common.core as core
 import importer.db_importer as db_importer
-from importer.db_models import Composition
+from importer.db_models import MofanggeComposition
 from storage.dummy_storage import DummyStorage
 from storage.es_storage import ESStorage
 import app_config
@@ -37,7 +37,7 @@ class MofanggeDBParser(db_importer.DefaultDBDataParser):
 
 class MofanggeImporter(db_importer.DBDataImporter):
     parser_class = MofanggeDBParser
-    model_class = Composition
+    model_class = MofanggeComposition
 
 
 if __name__ == '__main__':

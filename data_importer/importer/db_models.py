@@ -3,7 +3,7 @@
 from django.db import models
 
 # define mofangge composition model
-class Composition(models.Model):
+class MofanggeComposition(models.Model):
     """
         +------------+---------------------+------+-----+---------+----------------+
         | Field      | Type                | Null | Key | Default | Extra          |
