@@ -1,13 +1,12 @@
 # coding: utf-8
 
 import logging
-import sys
-import random
+import hashlib
+import Queue
+
+import common
 
 logger = logging.getLogger(__name__)
-
-class NotImplemented(Exception):
-    pass
 
 # storage base
 class Storage(object):
@@ -24,28 +23,26 @@ class Storage(object):
         raise NotImplemented
 
 
-# Dummy storage for test
-class DummyStorage(Storage):
-    def __init__(self, filename='storage.test.'+str(random.randint(0, 65535))):
-        super(DummyStorage, self).__init__()
-        self.filename = filename
-        self.file_handler = None
+class StorageThread(common.utils.CommonThread):
+    def __init__(self, storage, queue):
+        super(StorageThread, self).__init__()
+        self.storage = storage
+        self.queue = queue
 
-    def init(self):
-        logger.info('init dummy storage')
-        self.file_handler = open(self.filename, 'w')
+    def _key(self, value, generator=hashlib.md5()):
+        generator.update(str(value))
+        return generator.hexdigest()
 
-    def store(self, key, value):
+    def tick(self):
         try:
-            dump_value = {
-                'key' : key,
-                'value' : value
-            }
-            self.file_handler.write(str(dump_value) + '\n')
-        except:
-            raise
+            record = self.queue.get(block=False, timeout=1)
+        except Queue.Empty:
+            # logger.info('storage thread[{thread_id}] queue empty'.format(thread_id=self.name))
+            return
+        else:
+            self.storage.store(self._key(record), record)
+            self.queue.task_done()
 
-    def close(self):
-        self.file_handler.close()
+
 
 

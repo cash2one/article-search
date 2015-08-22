@@ -12,7 +12,7 @@ import Queue
 import threading
 
 import common.decorator as decorator
-from importer import DataImporter, MethodNotImplemented
+from importer import DataImporter
 
 logger = logging.getLogger(__name__)
 

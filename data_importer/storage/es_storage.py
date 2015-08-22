@@ -73,4 +73,5 @@ class ESStorage(Storage):
             self.client_pool.task_done()
             count += 1
         self.client_pool.join()
+        self.pool_size = 0
 

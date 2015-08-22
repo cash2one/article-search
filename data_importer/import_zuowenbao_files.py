@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 
 import common.core as core
 import importer.file_importer as file_importer
-from storage.storage import DummyStorage
+from storage.dummy_storage import DummyStorage
 from storage.es_storage import ESStorage 
 
 reload(sys)
@@ -174,8 +174,9 @@ if __name__ == '__main__':
     importer = ZuowenbaoImporter(root_path=ROOT_DIR)
     #output_storage = DummyStorage()
     output_storage = ESStorage(['localhost:32000'],
-                                        index='article', doc_type='composition', 
-                                        doc_index=DOC_INDEX)
-    worker = core.DataImport(importer=importer, storage=output_storage)
+                                index='article', 
+                                doc_type='composition', 
+                                doc_index=DOC_INDEX)
+    worker = core.DataImport(importer_inst=importer, storage_inst=output_storage)
     worker.start()
     worker.join()
