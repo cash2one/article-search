@@ -11,7 +11,8 @@ from bs4 import BeautifulSoup
 import common.core as core
 import importer.file_importer as file_importer
 from storage.dummy_storage import DummyStorage
-from storage.es_storage import ESStorage 
+from storage.es_storage import ESStorage
+import app_config
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -20,7 +21,7 @@ logging.config.fileConfig('logging.conf')
 logger = logging.getLogger() # get root logger
 
 
-class ZuowenbaoParser(file_importer.DefaultFileDataParser):
+class ZuowenbaoFileParser(file_importer.DefaultFileDataParser):
     source = 'zuowenbao'
     GRADE_DICT = {}
     GRADE_LIST = GRADE_DICT.keys()
@@ -62,10 +63,10 @@ class ZuowenbaoParser(file_importer.DefaultFileDataParser):
                 grade, style, number = 0, 0, 0
                 for tag in tags:
                     tag = str(tag.text)
-                    if tag in ZuowenbaoParser.GRADE_LIST:
-                        grade = ZuowenbaoParser.GRADE_DICT.get(tag, 0)
-                    elif tag in ZuowenbaoParser.STYLE_LIST:
-                        style = ZuowenbaoParser.STYLE_DICT.get(tag, 0)
+                    if tag in ZuowenbaoFileParser.GRADE_LIST:
+                        grade = ZuowenbaoFileParser.GRADE_DICT.get(tag, 0)
+                    elif tag in ZuowenbaoFileParser.STYLE_LIST:
+                        style = ZuowenbaoFileParser.STYLE_DICT.get(tag, 0)
                     elif tag.endswith('字'):
                         number = int(tag.replace('字', ''))
                     else:
@@ -80,7 +81,8 @@ class ZuowenbaoParser(file_importer.DefaultFileDataParser):
                         'grade' : grade, 
                         'style' : style, 
                         'number' : number, 
-                        'source' : ZuowenbaoParser.source,
+                        'score' : 0,
+                        'source' : ZuowenbaoFileParser.source,
                         'suggest' : title, # add title as suggest field simply
                     }
             except:
@@ -89,94 +91,17 @@ class ZuowenbaoParser(file_importer.DefaultFileDataParser):
 
 
 class ZuowenbaoImporter(file_importer.FileDataImporter):
-    parser_class = ZuowenbaoParser
-
-
-
-DOC_INDEX = {
-    "mappings" : {
-        "composition" : {
-            "properties":
-            {
-                "abstract":
-                {
-                    "type":"string",
-                    "indexAnalyzer":"mmseg_simple",
-                    "searchAnalyzer":"mmseg_simple"
-                },
-                "content":
-                {
-                    "type":"string",
-                    "indexAnalyzer":"mmseg_simple",
-                    "searchAnalyzer":"mmseg_simple"
-                },
-                "keywords":
-                {
-                    "type":"string",
-                    "index":"not_analyzed"
-                },
-                "originalID":
-                {
-                    "type":"string",
-                    "index":"not_analyzed"
-                },
-                "source":
-                {
-                    "type":"string",
-                    "index":"not_analyzed"
-                },
-                "title": {
-                    "type": "multi_field",
-                    "fields": {
-                        "title": {
-                            "type": "string",
-                            "store": "no",
-                            "term_vector": "with_positions_offsets",
-                            "analyzer": "pinyin_ngram_analyzer",
-                            "boost": 10
-                        },
-                        "primitive": {
-                            "type": "string",
-                            "store": "yes",
-                            "analyzer": "mmseg_simple"
-                        }
-                    }
-                },
-                "number":
-                {
-                    "type":"long"
-                },
-                "grade":
-                {
-                    "type":"long"
-                },
-                "style":
-                {
-                    "type":"long"
-                },
-                "suggest" :
-                { 
-                    "type" : "completion",
-                    "index_analyzer" : "mmseg_simple",
-                    "search_analyzer" : "mmseg_simple",
-                    "payloads" : True
-                }
-            }
-        }
-    }
-}
+    parser_class = ZuowenbaoFileParser
 
 
 if __name__ == '__main__':
-    ROOT_DIR = '/home/lbjworld/article_project/data/zuowenbao_details'
-
     logger.info('import zuowenbao data from files')
-    importer = ZuowenbaoImporter(root_path=ROOT_DIR)
+    importer = ZuowenbaoImporter(root_path=app_config.FILE_IMPORTER_CONFIG['ROOT_PATH'])
     #output_storage = DummyStorage()
-    output_storage = ESStorage(['localhost:32000'],
-                                index='article', 
-                                doc_type='composition', 
-                                doc_index=DOC_INDEX)
+    output_storage = ESStorage(app_config.ES_STORAGE_CONFIG['HOSTS'],
+                                index=app_config.ES_STORAGE_CONFIG['INDEX'], 
+                                doc_type=app_config.ES_STORAGE_CONFIG['DOC_TYPE'], 
+                                doc_index=app_config.ES_STORAGE_CONFIG['DOC_MAPPING'])
     worker = core.DataImport(importer_inst=importer, storage_inst=output_storage)
     worker.start()
     worker.join()

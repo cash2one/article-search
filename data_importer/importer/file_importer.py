@@ -2,21 +2,16 @@
 
 import logging
 import os
-import re
-import sys
-import types
-import random
 from multiprocessing import Pool
-from functools import partial
 import Queue
 import threading
 
 import common.decorator as decorator
-from importer import DataImporter
+from importer import DataParser, DataImporter
 
 logger = logging.getLogger(__name__)
 
-class DefaultFileDataParser(object):
+class DefaultFileDataParser(DataParser):
     """
         Work to Do :
         - read in file content
@@ -50,7 +45,7 @@ class FileDataImporter(DataImporter, threading.Thread):
     def data(self):
         while not (self.__data_end_event.isSet() and self.__data_queue.empty()):
             try:
-                obj = self.__data_queue.get(block=True, timeout=10)
+                obj = self.__data_queue.get(block=True, timeout=1)
             except Queue.Empty:
                 continue 
             else:
