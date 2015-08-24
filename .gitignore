@@ -1,2 +1,5 @@
 *.o
 *.pyc
+*.jar
+*.zip
+*.tar.gz
