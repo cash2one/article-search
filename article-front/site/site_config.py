@@ -1,9 +1,9 @@
 # coding: utf-8
 # site configs
 
-ENABLE_CROSSDOMAIN = True
+ENABLE_CROSSDOMAIN = False
 
-ES_HOSTS = ['localhost:32769']
+ES_HOSTS = ['elasticsearch:9200']
 ES_TITLE_SEARCH_URL = 'article/_suggest'
 ES_TITLE_SEARCH_BODY = """
 {{
