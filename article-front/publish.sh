@@ -10,3 +10,5 @@ grunt
 find . -type d -name '*' -exec mkdir -p ${DEST_DIR}/{} \;
 find . -type f -iregex ${EXT_PATTERN} -exec cp {} ${DEST_DIR}/{} \;
 cd -
+
+#openssl req -x509 -newkey rsa:4086 -keyout article-front.zuoyetong.com.cn.key -out article-front.zuoyetong.com.cn.crt -days 3650 -nodes

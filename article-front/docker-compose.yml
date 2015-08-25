@@ -1,0 +1,25 @@
+rproxy:
+    image: "nginx:1.9"
+    ports:
+     - "18290:443"
+    volumes:
+     - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro 
+     - ./nginx/sslkey:/etc/nginx/sslkey:ro
+     - ./site/app:/var/www/static:ro 
+    links:
+     - web:web
+
+web:
+    build: .
+    ports:
+     - "5000:5000"
+    volumes:
+     - ./site:/code
+    links:
+     - es:elasticsearch
+
+es:
+    image: "es-cn:1.7"
+    volumes:
+     - ./es_data:/usr/share/elasticsearch/data
+    
