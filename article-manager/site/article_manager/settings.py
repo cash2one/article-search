@@ -33,6 +33,11 @@ DEBUG_PROPAGATE_EXCEPTIONS = os.getenv('DJANGO_DEBUG')
 
 ALLOWED_HOSTS = [ os.getenv('DJANGO_HOST') ]
 
+# security settings
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SESSION_COOKIE_SECURE = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+CSRF_COOKIE_SECURE = True
 
 # Application definition
 
@@ -93,7 +98,7 @@ DATABASES = {
         #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': os.path.join(BASE_DIR, 'test_db.sqlite3'),
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('DB_MYSQL_DATABASE'),
+        'NAME': os.getenv('DB_ENV_MYSQL_DATABASE'),
         'USER': 'root',
         'PASSWORD': os.getenv('DB_ENV_MYSQL_ROOT_PASSWORD'),
         'HOST': 'db',

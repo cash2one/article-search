@@ -1,0 +1,30 @@
+rproxy:
+    image: "nginx:1.9"
+    ports:
+     - "18291:443"
+    volumes:
+     - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+     - ./nginx/sslkey:/etc/nginx/sslkey:ro
+     - ./site/static:/var/www/static:ro 
+    links:
+     - web:web
+
+web:
+    #build: .
+    image: "articlemanager_web"
+    environment:
+     - DJANGO_DEBUG=False
+     - DJANGO_HOST=article-manager.zuoyetong.com.cn
+    volumes:
+     - ./site:/code
+    links:
+     - db:db
+
+db:
+    image: "mysql:5.6"
+    environment:
+     - MYSQL_ROOT_PASSWORD=docker-mysql
+     - MYSQL_DATABASE=articles
+    #volumes:
+    # - ./mysql-data:/var/lib/mysql
+    
