@@ -8,4 +8,4 @@ RUN pip install -r requirements.txt
 
 EXPOSE 5000
 
-CMD python web_app.py port 5000 debug 0 
+CMD python web_app.py --port=5000 --debug=False --logging=DEBUG 

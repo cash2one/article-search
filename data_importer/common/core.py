@@ -34,6 +34,9 @@ class DataImport(threading.Thread):
         # put data into queue
         count = 0
         for record in self.importer.data():
+            if not record:
+                logger.warn('get None record, skip')
+                continue
             self._put_data(record)
             count += 1
         # importer stop
@@ -47,6 +50,6 @@ class DataImport(threading.Thread):
         self.storage.close()
         logger.info('finished data import, {count} records processed'.format(count=count))
 
-    @decorator.count(interval=100, enable=True, logger=logger, lvl=logging.INFO)
+    @decorator.count(interval=1000, enable=True, logger=logger, lvl=logging.INFO)
     def _put_data(self, record):
         self.data_queue.put(record, block=False)

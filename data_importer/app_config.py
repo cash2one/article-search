@@ -1,4 +1,5 @@
 # coding: utf-8
+import os
 
 # app config
 ES_COMPOSITION_MAPPING = {
@@ -79,23 +80,23 @@ ES_COMPOSITION_MAPPING = {
 }
 
 ES_STORAGE_CONFIG = {
-    'HOSTS' : ['localhost:32000'],
+    'HOSTS' : ['elasticsearch:9200'],
     'INDEX' : 'article',
     'DOC_TYPE' : 'composition',
     'DOC_MAPPING' : ES_COMPOSITION_MAPPING,
 }
 
 FILE_IMPORTER_CONFIG = {
-    'ROOT_PATH' : '/home/lbjworld/article_project/data/zuowenbao_details',
+    'ROOT_PATH' : os.getenv('IMPORTER_FILE_ROOTPATH'),
 }
 
 DB_IMPORTER_DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'composition',
-        'HOST': 'localhost',
-        'PORT': '3306',
-        'USER': 'root',
-        'PASSWORD': '123456',
+        'NAME': os.getenv('IMPORTER_DB_NAME'),
+        'HOST': os.getenv('IMPORTER_DB_HOST'),
+        'PORT': os.getenv('IMPORTER_DB_PORT'),
+        'USER': os.getenv('IMPORTER_DB_USER'),
+        'PASSWORD': os.getenv('IMPORTER_DB_PASSWORD'),
     }
 }

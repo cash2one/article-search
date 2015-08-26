@@ -18,10 +18,8 @@ import site_config
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-settings = {'debug' : True}
-
 define("debug",default=True,help="Debug Mode",type=bool)
-define("port", default=8888, help="run on the given port", type=int)
+define("port", default=5000, help="run on the given port", type=int)
 
 
 class MainHandler(tornado.web.RequestHandler):
@@ -39,16 +37,27 @@ class MainHandler(tornado.web.RequestHandler):
 
 
 def main():
+    print('start tornado web')
     tornado.options.parse_command_line()
-    application = tornado.web.Application([
-        (r"/", MainHandler),
-        (r"/ngapp/(.*)", tornado.web.StaticFileHandler, {"path":"app"}),
-        (r"/title_suggestion", TitleSuggestionHandler),
-        (r"/query_match", QueryMatchHandler),
-        (r"/query_detail", QueryDetailHandler),
-    ], **settings)
+    if options.debug:
+        application = tornado.web.Application([
+            (r"/", MainHandler),
+            (r"/ngapp/(.*)", tornado.web.StaticFileHandler, {"path":"app"}),
+            (r"/title_suggestion", TitleSuggestionHandler),
+            (r"/query_match", QueryMatchHandler),
+            (r"/query_detail", QueryDetailHandler),
+        ], **options.as_dict())
+    else:
+        application = tornado.web.Application([
+            (r"/", MainHandler),
+            (r"/title_suggestion", TitleSuggestionHandler),
+            (r"/query_match", QueryMatchHandler),
+            (r"/query_detail", QueryDetailHandler),
+        ], **options.as_dict())
+   
     tornado.httpclient.AsyncHTTPClient.configure('tornado.curl_httpclient.CurlAsyncHTTPClient')
     http_server = tornado.httpserver.HTTPServer(application)
+    print('listen on port:{port}'.format(port=options.port))
     http_server.listen(options.port)
     tornado.ioloop.IOLoop.instance().start()
 
