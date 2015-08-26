@@ -28,10 +28,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'soy7cvr+*ad_+6m(c2&pbeow4-tcxklmgyslak4b1=toih0()i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-DEBUG_PROPAGATE_EXCEPTIONS = True
+DEBUG = os.getenv('DJANGO_DEBUG')
+DEBUG_PROPAGATE_EXCEPTIONS = os.getenv('DJANGO_DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [ os.getenv('DJANGO_HOST') ]
 
 
 # Application definition
@@ -90,8 +90,14 @@ WSGI_APPLICATION = 'article_manager.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'test_db.sqlite3'),
+        #'ENGINE': 'django.db.backends.sqlite3',
+        #'NAME': os.path.join(BASE_DIR, 'test_db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv('DB_MYSQL_DATABASE'),
+        'USER': 'root',
+        'PASSWORD': os.getenv('DB_ENV_MYSQL_ROOT_PASSWORD'),
+        'HOST': 'db',
+        'PORT': '3306',
     }
 }
 
