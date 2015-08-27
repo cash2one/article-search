@@ -23,13 +23,12 @@ from django.conf.urls.static import static
 media_urlpatterns = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^backend/admin/', include(admin.site.urls)),
 
-    url(r'^composition/', include('composition.urls')),
-    url(r'^api-token-auth/me/', include('employee.urls')),
-    # url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^api-token-auth/signin/', 'rest_framework_jwt.views.obtain_jwt_token'),
+    url(r'^backend/composition/', include('composition.urls')),
+    url(r'^backend/api-token-auth/me/', include('employee.urls')),
+    # url(r'^backend/api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^backend/api-token-auth/signin/', 'rest_framework_jwt.views.obtain_jwt_token'),
 ]
-if settings.DEBUG:
-    urlpatterns += media_urlpatterns 
+urlpatterns += media_urlpatterns 
 

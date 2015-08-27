@@ -1,4 +1,5 @@
 FROM ubuntu:14.04
+MAINTAINER "Bijia Lan <lbj.world@gmail.com>"
 
 COPY sources.list /etc/apt/
 RUN apt-get update \

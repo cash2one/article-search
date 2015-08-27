@@ -1,4 +1,5 @@
 FROM python:2.7
+MAINTAINER "Bijia Lan <lbj.world@gmail.com>"
 
 # setup env
 ADD . /code

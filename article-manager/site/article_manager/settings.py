@@ -103,6 +103,10 @@ DATABASES = {
         'PASSWORD': os.getenv('DB_ENV_MYSQL_ROOT_PASSWORD'),
         'HOST': 'db',
         'PORT': '3306',
+        'OPTIONS': {
+            "charset":"utf8", 
+            "init_command":"SET storage_engine=InnoDB"
+        },
     }
 }
 

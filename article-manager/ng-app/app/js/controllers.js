@@ -143,7 +143,7 @@ angular.module('compositionAppControllers', ['ngStorage'])
                         fields: {
                             'format': 'api'
                         },
-                        url: '/composition/image/' + id + '/',
+                        url: '/backend/composition/image/' + id + '/',
                         file: $scope.uploadImage,
                         fileFormDataName: 'image'
                     })
@@ -212,7 +212,7 @@ angular.module('compositionAppControllers', ['ngStorage'])
             if (type == 'add') {
                 compositionService.get_add_meta({},
                     function(meta) {
-						$scope.compostionMeta = meta.actions.POST;
+			$scope.compostionMeta = meta.actions.POST;
                         $scope.gradeOptions = meta.actions.POST.grade.choices;
                         $scope.atypeOptions = meta.actions.POST.atype.choices;
                     }, hFail);
@@ -221,7 +221,7 @@ angular.module('compositionAppControllers', ['ngStorage'])
                         compositionId: id
                     },
                     function(meta) {
-						$scope.compostionMeta = meta.actions.PUT;
+			$scope.compostionMeta = meta.actions.PUT;
                         $scope.gradeOptions = meta.actions.PUT.grade.choices;
                         $scope.atypeOptions = meta.actions.PUT.atype.choices;
                     }, hFail);
@@ -232,14 +232,14 @@ angular.module('compositionAppControllers', ['ngStorage'])
         }
 
         // controller init
-		$scope.taToolbarConfig = [
-			['h1', 'h2', 'h3', 'h4', 'p', 'pre', 'quote'],
-			['bold', 'italics', 'underline', 'strikeThrough', 'ul', 'ol', 'redo', 'undo', 'clear'],
-			['justifyLeft', 'justifyCenter', 'justifyRight', 'indent', 'outdent'],
-			['html', 'wordcount', 'charcount']
-		];
+	$scope.taToolbarConfig = [
+		['h1', 'h2', 'h3', 'h4', 'p', 'pre', 'quote'],
+		['bold', 'italics', 'underline', 'strikeThrough', 'ul', 'ol', 'redo', 'undo', 'clear'],
+		['justifyLeft', 'justifyCenter', 'justifyRight', 'indent', 'outdent'],
+		['html', 'wordcount', 'charcount']
+	];
         $scope.compositionEdit = null;
-		$scope.compostionMeta = null;
+	$scope.compostionMeta = null;
         if ($routeParams.compositionId) {
             // edit existed composition
             loadCompositionMeta('edit', $routeParams.compositionId);

@@ -13,18 +13,20 @@ web:
     #build: .
     image: "articlemanager_web"
     environment:
-     - DJANGO_DEBUG=False
+     - DJANGO_DEBUG=0
      - DJANGO_HOST=article-manager.zuoyetong.com.cn
     volumes:
      - ./site:/code
     links:
      - db:db
+    command: 
 
 db:
     image: "mysql:5.6"
     environment:
      - MYSQL_ROOT_PASSWORD=docker-mysql
      - MYSQL_DATABASE=articles
-    #volumes:
-    # - ./mysql-data:/var/lib/mysql
+    volumes:
+     - ./mysql:/etc/mysql/conf.d
+     #- ./mysql_data:/var/lib/mysql
     

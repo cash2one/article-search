@@ -1,0 +1,13 @@
+[mysqld]
+bind-address=0.0.0.0
+
+; Log to stdout & stderr
+console=1
+general_log=1
+general_log_file=/dev/stdout
+log_error=/dev/stderr
+
+; Unicode
+collation-server=utf8_unicode_ci
+character-set-server=utf8
+
