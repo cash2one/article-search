@@ -6,6 +6,7 @@ if [ "$1" == "rebuild" ]; then
     REBUILD=1
 fi
 
+# some initial settings
 WORK_DIR=`pwd`
 DOMAIN_NAME="article-manager.zuoyetong.com.cn"
 SRC_DIR="${WORK_DIR}/ng-app"
@@ -14,6 +15,9 @@ EXT_PATTERN=".*\(\.js\|\.css\|\.html\|\.map\)"
 INCLUDE_PATTERN=".*webfont.*"
 SERVER_KEY_DIR="${WORK_DIR}/nginx/sslkey"
 WEB_DOCKER_NAME="articlemanager_web"
+MYSQL_WORK_DIR="${WORK_DIR}/mysql_data"
+STATIC_DIR="${WORK_DIR}/site/static"
+MEDIA_DIR="${WORK_DIR}/site/media"
 
 # build node_module & grunt
 rm -rf ${DEST_DIR} && mkdir -p ${DEST_DIR} && cd ${SRC_DIR}
@@ -34,12 +38,15 @@ if [ "$FINDER" == "" -o "$REBUILD" == "1" ]; then
     docker build -t ${WEB_DOCKER_NAME} ${WORK_DIR} || { echo 'build docker image failed'; exit 1; }
 fi
 
+# create mysql data dir
+if [ ! -d "${MYSQL_WORK_DIR}" ]; then
+    mkdir -p ${MYSQL_WORK_DIR} 
+fi
+
 # collect all static files
-STATIC_DIR=${WORK_DIR}/site/static
 if [ ! -d "${STATIC_DIR}" ]; then
     mkdir -p ${STATIC_DIR} 
 fi
-MEDIA_DIR=${WORK_DIR}/site/media
 if [ ! -d "${MEDIA_DIR}" ]; then
     mkdir -p ${MEDIA_DIR} 
 fi
