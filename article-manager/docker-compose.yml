@@ -29,4 +29,3 @@ db:
     volumes:
      - ./mysql:/etc/mysql/conf.d
      #- ./mysql_data:/var/lib/mysql
-    

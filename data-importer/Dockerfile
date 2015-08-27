@@ -7,5 +7,4 @@ WORKDIR /code
 RUN pip install -r requirements.txt
 
 # run job
-CMD python import_db.py 
-#CMD python import_files.py 
+CMD python import_files.py 

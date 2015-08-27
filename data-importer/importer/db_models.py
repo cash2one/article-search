@@ -23,6 +23,7 @@ class MofanggeComposition(models.Model):
         | Subject    | int(10) unsigned    | YES  |     | NULL    |                |
         | Content    | longtext            | YES  |     | NULL    |                |
         | Site       | tinyint(3) unsigned | YES  |     | NULL    |                |
+        +------------+---------------------+------+-----+---------+----------------+
     """
     doc_id = models.AutoField(db_column='DOCID', primary_key=True)
     md5_id = models.CharField(db_column='ID', max_length=64, default=None)
@@ -41,4 +42,52 @@ class MofanggeComposition(models.Model):
     source = models.SmallIntegerField(db_column='Site', null=True)
 
     class Meta:
+        managed = False
         db_table = 'mofangge_composition_content'
+
+# define backend db compostion model
+class BackendComposition(models.Model):
+    """
+        +-------------+--------------+------+-----+---------+----------------+
+        | Field       | Type         | Null | Key | Default | Extra          |
+        +-------------+--------------+------+-----+---------+----------------+
+        | id          | int(11)      | NO   | PRI | NULL    | auto_increment |
+        | title       | varchar(300) | NO   |     | NULL    |                |
+        | abstract    | varchar(500) | NO   |     | NULL    |                |
+        | tags        | longtext     | YES  |     | NULL    |                |
+        | atype       | int(11)      | YES  |     | NULL    |                |
+        | grade       | int(11)      | YES  |     | NULL    |                |
+        | number      | int(11)      | NO   |     | NULL    |                |
+        | created     | datetime(6)  | NO   |     | NULL    |                |
+        | modified    | datetime(6)  | NO   |     | NULL    |                |
+        | content     | longtext     | NO   |     | NULL    |                |
+        | source      | varchar(200) | YES  |     | NULL    |                |
+        | status      | int(11)      | NO   |     | NULL    |                |
+        | image       | varchar(300) | YES  |     | NULL    |                |
+        | beginning   | longtext     | YES  |     | NULL    |                |
+        | ending      | longtext     | YES  |     | NULL    |                |
+        | approver_id | int(11)      | YES  | MUL | NULL    |                |
+        | creator_id  | int(11)      | NO   | MUL | NULL    |                |
+        +-------------+--------------+------+-----+---------+----------------+
+    """
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=300)
+    abstract = models.CharField(max_length=500)
+    tags = models.TextField(blank=True, null=True)
+    atype = models.IntegerField(blank=True, null=True)
+    grade = models.IntegerField(blank=True, null=True)
+    number = models.IntegerField()
+    created = models.DateTimeField()
+    modified = models.DateTimeField()
+    content = models.TextField()
+    source = models.CharField(max_length=200, blank=True, null=True)
+    status = models.IntegerField()
+    image = models.CharField(max_length=300, blank=True, null=True)
+    beginning = models.TextField(blank=True, null=True)
+    ending = models.TextField(blank=True, null=True)
+    approver = models.IntegerField(blank=True, null=True)
+    creator = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'composition_composition'
