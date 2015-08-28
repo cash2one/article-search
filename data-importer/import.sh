@@ -23,7 +23,7 @@ function import_backend_db() {
            -e "IMPORTER_DB_PORT=3306" \
            -e "IMPORTER_DB_USER=root" \
            -e "IMPORTER_DB_PASSWORD=docker-mysql" \
-           db_importer python import_mofangge_db.py
+           db_importer python import_backend_db.py
 }
 
 if [[ "$1" == "" ]]; then

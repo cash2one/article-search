@@ -85,8 +85,8 @@ class BackendComposition(models.Model):
     image = models.CharField(max_length=300, blank=True, null=True)
     beginning = models.TextField(blank=True, null=True)
     ending = models.TextField(blank=True, null=True)
-    approver = models.IntegerField(blank=True, null=True)
-    creator = models.IntegerField()
+    approver_id = models.IntegerField(blank=True, null=True)
+    creator_id = models.IntegerField()
 
     class Meta:
         managed = False
