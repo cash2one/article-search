@@ -19,7 +19,6 @@ web:
      - ./site:/code
     links:
      - db:db
-    command: 
 
 db:
     image: "mysql:5.6"
