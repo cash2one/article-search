@@ -5,88 +5,142 @@
 /* Controllers */
 
 angular.module('compositionAppControllers', ['ngStorage'])
-.controller('HomeCtrl', ['$rootScope', '$scope', '$location', '$localStorage', 'authService', 'compositionService',
-    function($rootScope, $scope, $location, $localStorage, authService, compositionService) {
+.controller('rootCtrl', ['$rootScope', '$scope', '$location', '$localStorage', 'authService',
+    function($rootScope, $scope, $location, $localStorage, authService) {
         // helper functions
-        function changeUser(user) {
-            angular.extend($rootScope.gCurrentUser, user);
+        function changePath(url) {
+            $location.path(url);
+            console.log('change to url: '+url);
         }
 
-        function getUserFromLocal() {
+        // load user meta
+        function loadUserMeta(userId, onUserMetaLoaded) {
+            if (!userId) {
+                console.log('cannot get userId');
+                return;
+            }
+            authService.me(userId,
+                function(userMeta) {
+                    // cache user meta to local
+                    $localStorage.userMeta = userMeta;
+                    $scope.gUserMeta = userMeta;
+                    if (onUserMetaLoaded) {
+                        onUserMetaLoaded(userMeta);
+                    }
+                },
+                function() {
+                    console.log("get user meta failed");
+                });
+        }
+
+        $scope.resetUser = function() {
+            // clear scope varible state
+            delete $scope.gUserMeta;
+            delete $scope.gCurrentUser;
+            // clean localStorage
+            delete $localStorage.token;
+            delete $localStorage.userMeta;
+        }
+
+        // get data from localStorage
+        $scope.refreshUser = function(onUserMetaLoaded) {
+            $scope.gCurrentUser = $rootScope.getUserFromLocal();
+            if ($scope.gCurrentUser) {
+                loadUserMeta($scope.gCurrentUser.user_id, onUserMetaLoaded);
+            } else {
+                changePath('/signin');
+            }
+        }
+
+        $scope.userLogout = function() {
+            $rootScope.userLogout();
+        };
+
+        // common functions
+        $rootScope.getUserFromLocal = function() {
             var token = $localStorage.token;
-            var user = {};
-            if (typeof token !== 'undefined') {
+            var user = null;
+            if (token) {
                 user = jwt_decode(token);
-                // console.log(user);
+                console.log(user);
             }
             return user;
         }
 
-        function changePath(url) {
-            $location.path(url);
-            // console.log('change to url:'+url);
+        $rootScope.userLogin = function(formData) {
+            console.log("user login");
+            authService.signin(formData, function(res) {
+                if (res.token) {
+                    // cache token to local
+                    $localStorage.token = res.token;
+                    // set scope varible state
+                    $scope.refreshUser(null);
+                    changePath("/home");
+                } else {
+                    alert('Network error, Failed to signin.');
+                    changePath("/signin");
+                }
+            }, function() {
+                alert('Username or password error, Failed to signin.');
+                changePath("/signin");
+            });
+        };
+
+        $rootScope.userLogout = function() {
+            console.log("user logout");
+            authService.logout(function() {
+                $scope.resetUser();
+                $scope.refreshUser(null);
+            });
+        };
+
+        $rootScope.refreshUser = function(onUserMetaLoaded) {
+            $scope.refreshUser(onUserMetaLoaded);
         }
 
-        // load user meta
-        function loadUserMeta(user_id) {
-            authService.me(user_id,
-                function(userMeta) {
-                    $rootScope.gUserMeta = userMeta;
-                    // cache user meta to local
-                    $localStorage.userMeta = userMeta;
-                    changePath("/");
-                },
-                function() {
-                    $rootScope.gUserMeta = null;
-                    alert("get user meta failed");
-                    changePath("/");
-                });
+        $rootScope.resetUser = function() {
+            $scope.resetUser();
         }
 
+        // controller 
+        console.log('start init');
+        $scope.refreshUser(null);
+        
+    }
+])
+
+.controller('homeCtrl', ['$rootScope', '$scope',
+    function($rootScope, $scope) {
+        // controller init
+        console.log("home page");
+        // $rootScope.refreshUser(null);
+        $scope.introduction = "该系统分为两种角色：录入员和审核员";
+    }
+])
+
+.controller('signinCtrl', ['$rootScope', '$scope',
+    function($rootScope, $scope) {
         $scope.signin = function() {
             var formData = {
                 username: $scope.username,
                 password: $scope.password
             };
-            authService.signin(formData, function(res) {
-                if (res.token) {
-                    // set scope varible state
-                    $rootScope.gToken = res.token;
-                    // cache token to local
-                    $localStorage.token = res.token;
-                    var currentUser = getUserFromLocal();
-                    changeUser(currentUser);
-                    // load user info
-                    loadUserMeta(currentUser.user_id);
-                } else {
-                    alert('Network error, Failed to signin');
-                }
-            }, function() {
-                alert('Username or password error, Failed to signin');
-            });
+            $rootScope.userLogin(formData);
         };
 
         $scope.logout = function() {
-            authService.logout(function() {
-                // clear scope varible state
-                delete $rootScope.gToken;
-                delete $rootScope.gUserMeta;
-                delete $localStorage.token;
-                changeUser({});
-                changePath("/");
-            });
+            $rootScope.userLogout();
         };
 
         // controller init
-        $rootScope.gToken = $localStorage.token;
-        $rootScope.gCurrentUser = getUserFromLocal();
-        $rootScope.gUserMeta = $localStorage.userMeta;
-        $scope.signinError = null;
+        console.log("sign page");
+        $rootScope.resetUser();
+        // $rootScope.refreshUser(null);
     }
 ])
 
-.controller('compositionsListCtrl', ['$scope', 'compositionService',
-    function($scope, compositionService) {
+.controller('compositionsListCtrl', ['$rootScope', '$scope', 'compositionService',
+    function($rootScope, $scope, compositionService) {
         $scope.scrollExpand = function() {
             if (!$scope.compositions || $scope.loading) return;
             $scope.loading = true;
@@ -104,6 +158,8 @@ angular.module('compositionAppControllers', ['ngStorage'])
         };
 
         // controller init
+        $rootScope.refreshUser(null);
+
         $scope.loading = false;
         $scope.currentpage = 1;
         $scope.compositions = [];
@@ -113,18 +169,21 @@ angular.module('compositionAppControllers', ['ngStorage'])
 .controller('userCtrl', ['$rootScope', '$scope', '$location', 'authService',
     function($rootScope, $scope, $location, authService) {
         // controller init
-        if ($rootScope.gCurrentUser) {
-            authService.me($rootScope.gCurrentUser.user_id,
+        $rootScope.refreshUser(null);
+
+        var currentUser = $rootScope.getUserFromLocal()
+        if (currentUser) {
+            authService.me(currentUser.user_id,
                 function(userData) {
                     $scope.myDetails = userData;
                 },
                 function() {
-                    alert("get user detail failed");
-                    $scope.logout();
+                    console.error("get user detail failed");
+                    $rootScope.userLogout();
                 });
         } else {
-            alert("user login error");
-            $scope.logout();
+            console.error("user login error");
+            $rootScope.userLogout();
         }
     }
 ])
@@ -232,14 +291,15 @@ angular.module('compositionAppControllers', ['ngStorage'])
         }
 
         // controller init
-	$scope.taToolbarConfig = [
-		['h1', 'h2', 'h3', 'h4', 'p', 'pre', 'quote'],
-		['bold', 'italics', 'underline', 'strikeThrough', 'ul', 'ol', 'redo', 'undo', 'clear'],
-		['justifyLeft', 'justifyCenter', 'justifyRight', 'indent', 'outdent'],
-		['html', 'wordcount', 'charcount']
-	];
+        $rootScope.refreshUser(null);
+    	$scope.taToolbarConfig = [
+            ['h1', 'h2', 'h3', 'h4', 'p', 'pre', 'quote'],
+            ['bold', 'italics', 'underline', 'strikeThrough', 'ul', 'ol', 'redo', 'undo', 'clear'],
+            ['justifyLeft', 'justifyCenter', 'justifyRight', 'indent', 'outdent'],
+            ['html', 'wordcount', 'charcount']
+        ];
         $scope.compositionEdit = null;
-	$scope.compostionMeta = null;
+        $scope.compostionMeta = null;
         if ($routeParams.compositionId) {
             // edit existed composition
             loadCompositionMeta('edit', $routeParams.compositionId);
@@ -264,9 +324,10 @@ angular.module('compositionAppControllers', ['ngStorage'])
     }
 ])
 
-.controller('compositionsDetailCtrl', ['$scope', '$location', '$routeParams', 'compositionService',
-    function($scope, $location, $routeParams, compositionService) {
+.controller('compositionsDetailCtrl', ['$rootScope', '$scope', '$location', '$routeParams', 'compositionService',
+    function($rootScope, $scope, $location, $routeParams, compositionService) {
         // controller init
+        $rootScope.refreshUser(null);
         compositionService.get_detail({
                 compositionId: $routeParams.compositionId
             },

@@ -17,47 +17,49 @@ angular.module('compositionApp', [
     'compositionAppControllers',
     'compositionAppServices'
 ])
-.config(['$routeProvider', '$httpProvider', '$resourceProvider',
-        function($routeProvider, $httpProvider, $resourceProvider) {
+.config(['$routeProvider', '$locationProvider', '$httpProvider', '$resourceProvider',
+        function($routeProvider, $locationProvider, $httpProvider, $resourceProvider) {
             $routeProvider.
-            when('/', {
+            when('/home', {
                     templateUrl: 'partials/home.html',
-                    controller: 'HomeCtrl'
+                    controller: 'homeCtrl'
                 })
                 .
             when('/signin', {
                     templateUrl: 'partials/signin.html',
-                    controller: 'HomeCtrl'
+                    controller: 'signinCtrl'
                 })
                 .
             when('/me', {
                     templateUrl: 'partials/me.html',
-                    controller: 'HomeCtrl'
+                    controller: 'userCtrl'
                 })
                 .
             when('/compositions', {
                     templateUrl: 'partials/compositions.html',
-                    controller: 'HomeCtrl'
+                    controller: 'compositionsListCtrl'
                 })
                 .
             when('/compositions/:compositionId', {
                     templateUrl: 'partials/composition-detail.html',
-                    controller: 'HomeCtrl'
+                    controller: 'compositionsDetailCtrl'
                 })
                 .
             when('/add-composition', {
                     templateUrl: 'partials/composition-edit.html',
-                    controller: 'HomeCtrl'
+                    controller: 'compositionsEditCtrl'
                 })
                 .
             when('/edit-composition/:compositionId', {
                     templateUrl: 'partials/composition-edit.html',
-                    controller: 'HomeCtrl'
+                    controller: 'compositionsEditCtrl'
                 })
                 .
             otherwise({
                 redirectTo: '/signin'
             });
+
+            $locationProvider.html5Mode(true);
 
             $httpProvider.interceptors.push(['$q', '$rootScope', '$location', '$localStorage',
                 function($q, $rootScope, $location, $localStorage) {
@@ -71,9 +73,7 @@ angular.module('compositionApp', [
                         },
                         'responseError': function(response) {
                             if (response.status === 401 || response.status === 403) {
-                                delete $rootScope.token;
-                                delete $localStorage.token;
-                                delete $rootScope.currentUser;
+                                $rootScope.userLogout();
                                 $location.path('/signin');
                             }
                             return $q.reject(response);

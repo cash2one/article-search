@@ -17,6 +17,7 @@ web:
      - DJANGO_HOST=article-manager.zuoyetong.com.cn
     volumes:
      - ./site:/code
+    command: ./entrypoint.sh
     links:
      - db:db
 
